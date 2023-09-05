@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class ProductGenerator {
     public static void main(String[] args) {
-        ArrayList<String> productData = new ArrayList<>();
+        ArrayList<Product> productData = new ArrayList<>();
         Scanner input = new Scanner(System.in);
         while (true) {
             System.out.println("Enter product's ID:");
@@ -22,8 +22,7 @@ public class ProductGenerator {
             double productCost = input.nextDouble();
             input.nextLine(); // Consume the newline left in the input buffer
 
-            String singleProductData = productId + ", " + productName + ", " + productDesc + ", " + productCost;
-            productData.add(singleProductData);
+            productData.add(new Product(productId, productName, productDesc, productCost));
 
             System.out.println("Do you want to enter more information? (yes/no)");
             String continueInput = input.nextLine().toLowerCase();
@@ -37,8 +36,9 @@ public class ProductGenerator {
 
         try {
             FileWriter writer = new FileWriter(fileName + ".txt");
-            for (String data : productData) {
-                writer.write(data + "\n");
+            for (Product data : productData) {
+                System.out.println(data.toCSVDataRecord());
+                writer.write(data.toCSVDataRecord() + "\n");
             }
             writer.close();
             System.out.println("Data saved to " + fileName + ".txt");
